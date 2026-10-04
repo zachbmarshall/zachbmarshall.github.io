@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Join a family on Lull</title>
+  <meta name="description" content="You've been invited to share a baby's log on Lull.">
+  <meta property="og:title" content="Join our family on Lull">
+  <meta property="og:description" content="Sleep, feeds, and diapers, all in one place.">
+  <meta property="og:image" content="https://zachbmarshall.github.io/lull/icon.png">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FBF8F3; --card: #FFFFFF; --text: #2F2A26; --muted: #7A716A;
+      --border: #EDE7DF; --accent: #5FB08A; --accent-fg: #FFFFFF;
+      color-scheme: light dark;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1C1B1F; --card: #26252A; --text: #ECE7E1; --muted: #A39B93;
+        --border: #35333A; --accent: #6FB894; --accent-fg: #1C1B1F;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 24px 16px;
+      background: var(--bg); color: var(--text);
+      font: 600 16px/1.45 'Nunito', ui-sans-serif, system-ui, sans-serif;
+    }
+    main { width: 100%; max-width: 420px; }
+    h1 { margin: 0 0 4px; font-size: 40px; font-weight: 800; }
+    .lede { margin: 0 0 24px; color: var(--muted); }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px; }
+    .label { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+    .code {
+      margin: 6px 0 16px; font: 800 32px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .15em; word-break: break-all;
+    }
+    .btn {
+      display: block; width: 100%; padding: 14px; border: 0; border-radius: 14px; text-align: center;
+      font: inherit; font-weight: 800; font-size: 17px; text-decoration: none; cursor: pointer;
+    }
+    .primary { background: var(--accent); color: var(--accent-fg); }
+    .secondary { margin-top: 10px; background: transparent; color: var(--text); border: 1px solid var(--border); }
+    ol { margin: 20px 0 0; padding-left: 20px; color: var(--muted); }
+    li + li { margin-top: 6px; }
+    .missing { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Lull</h1>
+    <p class="lede">You've been invited to join a family and share the baby's log.</p>
+
+    <div class="card" id="invite" hidden>
+      <div class="label">Your invite code</div>
+      <div class="code" id="code"></div>
+      <a class="btn primary" id="open">Open in Lull</a>
+      <button class="btn secondary" id="copy" type="button">Copy code</button>
+      <ol>
+        <li>Install Lull on your iPhone. Ask whoever invited you for the link.</li>
+        <li>Tap <b>Open in Lull</b>, or choose <b>Create account</b> and enter the code above.</li>
+        <li>You'll join the family as soon as you're signed in. Codes work once.</li>
+      </ol>
+    </div>
+
+    <p class="card missing" id="none" hidden>This invite link is missing its code. Ask for a new one.</p>
+  </main>
+
+  <script>
+    // Only reached when iOS didn't hand the link straight to the app (not installed yet, or opened inside a browser).
+    var code = (new URLSearchParams(location.search).get('code') || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
+    if (code) {
+      document.getElementById('code').textContent = code
+      document.getElementById('open').href = 'lull://invite?code=' + code
+      document.getElementById('invite').hidden = false
+      var copy = document.getElementById('copy')
+      copy.addEventListener('click', function () {
+        navigator.clipboard.writeText(code).then(function () { copy.textContent = 'Copied' }, function () {})
+      })
+    } else {
+      document.getElementById('none').hidden = false
+    }
+  </script>
+</body>
+</html>

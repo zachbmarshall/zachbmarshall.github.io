@@ -1,0 +1,10 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["AN5H2DY9MA.com.zachmarshall.lull"],
+        "components": [{ "/": "/lull/invite*", "comment": "Family invite links open the app" }]
+      }
+    ]
+  }
+}
